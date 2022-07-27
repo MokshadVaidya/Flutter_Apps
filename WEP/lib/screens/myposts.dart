@@ -1,12 +1,19 @@
 import 'dart:math' as math;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:wep/constants/partnersCard.dart';
 import '../constants/constants.dart';
 import '../constants/comment_card.dart';
-
+import '../constants/questioncard_choiceoption.dart';
+import '../constants/responsesCard.dart';
+import '../constants/eventsCard.dart';
 // ignore_for_file:prefer_const_literals_to_create_immutables
 // ignore_for_file: prefer_const_constructors
 class MyPostPage extends StatefulWidget {
+  static String id = "mypost page";
+
   @override
   State createState() {
     return MyPostPageState();
@@ -14,12 +21,51 @@ class MyPostPage extends StatefulWidget {
 }
 
 class MyPostPageState extends State<MyPostPage> {
+  bool isList = false;
+  List<Widget> reponses_lists = [
+    //TopCard(question_text: loremIpsum),
+    heading(heading_title: "Responses"),
+    Responces_Card(respo_answer: loremIpsum,),
+    Responces_Card(respo_answer: loremIpsum,),
+    Responces_Card(respo_answer: loremIpsum,),
+    Responces_Card(respo_answer: loremIpsum,),
+  ];
+  List<Widget> resources_lists = [
+    //TopCard(question_text: loremIpsum),
+    heading(heading_title: "Resource"),
+
+    Responces_Card(respo_answer: loremIpsum,),
+    Responces_Card(respo_answer: loremIpsum,),
+    Responces_Card(respo_answer: loremIpsum,),
+  ];
+  List<Widget> events_lists = [
+    //TopCard(question_text: loremIpsum),
+    heading(heading_title: "Events"),
+    Events_Card(imgurl: 'https://images.indianexpress.com/2020/04/online759.jpg'),
+    Events_Card(imgurl: 'https://images.indianexpress.com/2020/04/online759.jpg'),
+    Events_Card(imgurl: 'https://images.indianexpress.com/2020/04/online759.jpg'),
+    Events_Card(imgurl: 'https://images.indianexpress.com/2020/04/online759.jpg'),
+
+  ];
+  List<Widget> partners_lists = [
+    //TopCard(question_text: loremIpsum),
+    heading(heading_title: "Partners"),
+    Partners_Card(respo_answer: loremIpsum),
+    Partners_Card(respo_answer: loremIpsum),
+    Partners_Card(respo_answer: loremIpsum),
+    Partners_Card(respo_answer: loremIpsum),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    List<List<Widget>> current_screen = [reponses_lists,resources_lists,events_lists,partners_lists];
     return Scaffold(
       appBar: AppBar(
         title: Text("WEP"),
         backgroundColor: Color(0xFF050f2c),
+        actions: [
+          IconButton(onPressed: (){isList = isList? false: true;print(isList);Provider.of<isListData>(context,listen: false).changedata(isList);}, icon: Icon(FontAwesomeIcons.list,size: 18,)),
+        ],
       ),
       body: ExpandableTheme(
         data: const ExpandableThemeData(
@@ -27,91 +73,60 @@ class MyPostPageState extends State<MyPostPage> {
           useInkWell: true,
           hasIcon: false,
         ),
-        child: PageView(
-            scrollDirection: Axis.horizontal,
+        child: Provider.of<isListData>(context).newisList?ListView(
+          children: [
+            Container(
+              child: Text(loremIpsum,maxLines: 7,),
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
+                boxShadow: [
+                  //background color of box
+                  BoxShadow(
+                    color: Colors.black54,
+                    blurRadius: 5.0, // soften the shadow
+                    spreadRadius: 1.0, //extend the shadow
+                    offset: Offset(
+                      5.0, // Move to right 10  horizontally
+                      5.0, // Move to bottom 10 Vertically
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ):
+        PageView(scrollDirection: Axis.horizontal, children: [
+          Column(
             children: [
-          ListView(
-            physics: const BouncingScrollPhysics(),
-            children: <Widget>[
-              TopCard(),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  "Responses",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
+              Container(
+                child: SingleChildScrollView(child: TopCard(question_text: loremIpsum)),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height*0.6,
+                margin: EdgeInsets.only(bottom: 2),
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: current_screen[Provider.of<Data>(context).val_provider],
                 ),
               ),
-              Card1(),
-              Card1(),
-              Card1(),
-              Card1(),
             ],
           ),
-              ListView(
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
-                  TopCard(),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "Responses",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                ],
-              ),
-              ListView(
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
-                  TopCard(),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "Responses",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                ],
-              ),
-              ListView(
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
-                  TopCard(),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "Responses",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                  Card1(),
-                ],
-              ),
+          ListView(
+            physics: const BouncingScrollPhysics(),
+            children: current_screen[Provider.of<Data>(context).val_provider],
+          ) ,
+          ListView(
+            physics: const BouncingScrollPhysics(),
+            children: current_screen[Provider.of<Data>(context).val_provider],
+          ),
+          ListView(
+            physics: const BouncingScrollPhysics(),
+            children: current_screen[Provider.of<Data>(context).val_provider],
+          ),
         ]),
-
       ),
     );
   }
@@ -120,265 +135,3 @@ class MyPostPageState extends State<MyPostPage> {
 const loremIpsum =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-class Card1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ExpandableNotifier(
-        child: Padding(
-      padding: const EdgeInsets.all(10),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.1,
-              padding: EdgeInsets.all(10),
-              child: Row(children: [
-                CircleAvatar(
-                  radius: MediaQuery.of(context).size.height * 0.04,
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Name Comes Here!!",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        "Posted on May 22, 2022 @08:00 PM",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ),
-            ScrollOnExpand(
-              scrollOnExpand: true,
-              scrollOnCollapse: false,
-              child: ExpandablePanel(
-                theme: const ExpandableThemeData(
-                  headerAlignment: ExpandablePanelHeaderAlignment.center,
-                  tapBodyToCollapse: true,
-                  tapBodyToExpand: true,
-                ),
-                header: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      "ExpandablePanel",
-                      // style: Theme.of(context).textTheme.body2,
-                    )),
-                collapsed: Text(
-                  loremIpsum,
-                  softWrap: true,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                expanded: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    for (var _ in Iterable.generate(5))
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            loremIpsum,
-                            softWrap: true,
-                            overflow: TextOverflow.fade,
-                          )),
-                  ],
-                ),
-                builder: (_, collapsed, expanded) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: Expandable(
-                      collapsed: collapsed,
-                      expanded: expanded,
-                      theme: const ExpandableThemeData(crossFadePoint: 0),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-}
-
-class TopCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ExpandableNotifier(
-        child: Column(
-      children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height * 0.30,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: kthemeGradient,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Center(
-                    child: Text(
-                  "Swipe for next post >>",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w100,
-                    color: Colors.white,
-                  ),
-                )),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: Text(loremIpsum),
-                )
-              ],
-            ),
-          ),
-        ),
-        ScrollOnExpand(
-          scrollOnExpand: false,
-          scrollOnCollapse: false,
-          child: ExpandablePanel(
-            theme: const ExpandableThemeData(
-              headerAlignment: ExpandablePanelHeaderAlignment.center,
-              tapBodyToCollapse: false,
-              tapBodyToExpand: true,
-            ),
-            header: Container(
-              child: Icon(
-                Icons.expand_more,
-                color: Colors.white,
-              ),
-              decoration: BoxDecoration(
-                gradient: kthemeGradient,
-              ),
-            ),
-            collapsed: Container(
-              decoration: BoxDecoration(
-                gradient: kthemeGradient,
-              ),
-            ),
-            expanded: SizedBox(
-              height: 150,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: kthemeGradient,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "Responses",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "Resources",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "Partners",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "Events",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            builder: (_, collapsed, expanded) {
-              return Expandable(
-                collapsed: collapsed,
-                expanded: expanded,
-                theme: const ExpandableThemeData(crossFadePoint: 0),
-              );
-            },
-          ),
-        ),
-      ],
-    ));
-  }
-}

@@ -36,6 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   expansion_tile_card: ^2.0.0
   expandable: ^5.0.1
+  speech_to_text: ^5.5.0
+  highlight_text: any
+  avatar_glow: ^2.0.2
+  font_awesome_flutter: ^10.1.0
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
